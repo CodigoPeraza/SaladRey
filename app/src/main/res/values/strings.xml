@@ -10,4 +10,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <!-- Drawer -->
+    <string name="menu_catalog">Catálogo</string>
+    <string name="menu_cart">Carrito</string>
+    <string name="menu_manager">Manager</string>
+
 </resources>
