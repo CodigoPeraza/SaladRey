@@ -31,5 +31,16 @@ public class CartRepository {
         }
         cart.postValue(current);
     }
-
+    public void remove(CartItem ci) {
+        List<CartItem> cur = new ArrayList<>(cart.getValue());
+        cur.remove(ci);
+        cart.postValue(cur);
+    }
+    public void clear() { cart.postValue(new ArrayList<>()); }
+    public double total() {
+        return cart.getValue()
+                .stream()
+                .mapToDouble(CartItem::subtotal)
+                .sum();
+    }
 }
