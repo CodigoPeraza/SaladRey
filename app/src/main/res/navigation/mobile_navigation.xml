@@ -5,21 +5,29 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+    <!-- Catálogo -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.mr21082pm18077.saladrey.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="com.mr21082pm18077.saladrey.ui.catalog.CatalogFragment"
+        android:label="@string/menu_catalog"
+        tools:layout="@layout/fragment_catalog" />
 
+    <!-- Carrito -->
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.mr21082pm18077.saladrey.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:name="com.mr21082pm18077.saladrey.ui.cart.CartFragment"
+        android:label="@string/menu_cart"
+        tools:layout="@layout/fragment_cart" />
 
+    <!-- Manager (solo admin) -->
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.mr21082pm18077.saladrey.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_manager"
+        android:name="com.mr21082pm18077.saladrey.ui.manager.ManagerFragment"
+        android:label="@string/menu_manager"
+        tools:layout="@layout/fragment_manager" />
+
+    <!-- Acción global: del Catálogo al Carrito -->
+    <action
+        android:id="@+id/action_catalog_to_cart"
+        app:destination="@id/nav_gallery" />
 </navigation>
