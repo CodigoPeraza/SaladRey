@@ -1,16 +1,21 @@
 package com.mr21082pm18077.saladrey.ui.cart;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.mr21082pm18077.saladrey.R;
+
 import org.jspecify.annotations.NonNull;
 
 public class CartFragment extends Fragment {
@@ -19,12 +24,16 @@ public class CartFragment extends Fragment {
     private CartAdapter ad;
     private TextView txtTotal;
 
-    public CartFragment(){}
-
-    @Override public View onCreateView(@NonNull LayoutInflater i, ViewGroup c, Bundle s){
-        return i.inflate(R.layout.fragment_cart,c,false);
+    public CartFragment() {
     }
-    @Override public void onViewCreated(@NonNull View v, Bundle s){
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater i, ViewGroup c, Bundle s) {
+        return i.inflate(R.layout.fragment_cart, c, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View v, Bundle s) {
         RecyclerView rv = v.findViewById(R.id.recyclerCart);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         ad = new CartAdapter(ci -> vm.delete(ci));
@@ -39,8 +48,31 @@ public class CartFragment extends Fragment {
         });
 
         v.findViewById(R.id.btnClear).setOnClickListener(b -> vm.clear());
-        v.findViewById(R.id.btnPay).setOnClickListener(b ->
-                Toast.makeText(getContext(),"¡Pedido confirmado!",Toast.LENGTH_SHORT).show()
-        );
+
+        v.findViewById(R.id.btnPay).setOnClickListener(b -> {
+
+            // 1. Campo de entrada
+            final EditText input = new EditText(requireContext());
+            input.setHint("Nombre o mesa");
+            input.setSingleLine();
+
+            // 2. Diálogo de confirmación
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Confirmar pedido")
+                    .setMessage("Ingrese un nombre o mesa")
+                    .setView(input)
+                    .setPositiveButton("Confirmar", (d, i) -> {
+                        String who = input.getText().toString().trim();
+                        if (who.isEmpty()) who = "cliente";
+                        Toast.makeText(requireContext(),
+                                "¡Pedido para " + who + " confirmado!", Toast.LENGTH_SHORT).show();
+
+                        vm.clear();   // 3. Vaciar carrito
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+        });
+
+
     }
 }

@@ -1,11 +1,9 @@
 package com.mr21082pm18077.saladrey.ui.manager;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -13,7 +11,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
@@ -29,14 +26,25 @@ public class AddEditSaladDialogFragment extends DialogFragment {
     private FragmentAddEditSaladBinding bind;
     private String selectedUri = "";
     // --------------------------- selección de imagen ---------------------------
-    private final ActivityResultLauncher<String> picker =
-            registerForActivityResult(new ActivityResultContracts.GetContent(),
-                    uri -> {
+    // 1. ActivityResultLauncher
+    // ---- 1. Picker con OpenDocument (UN ÚNICO Uri) ----
+    private final ActivityResultLauncher<String[]> picker =
+            registerForActivityResult(new ActivityResultContracts.OpenDocument(),
+                    uri -> {                    //  <-- parámetro Único
                         if (uri != null) {
+
+                            // ► Otorgamos permiso persistente de lectura
+                            requireContext().getContentResolver()
+                                    .takePersistableUriPermission(
+                                            uri,
+                                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    );
+
                             selectedUri = uri.toString();
                             bind.img.setImageURI(uri);
                         }
                     });
+
 
     public AddEditSaladDialogFragment(SaladRepository r, @Nullable Salad s) {
         repo = r;
@@ -77,30 +85,12 @@ public class AddEditSaladDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    // 2. Lanzar el picker
     private void pickImage() {
-        if (Build.VERSION.SDK_INT >= 33 &&
-                ContextCompat.checkSelfPermission(requireContext(),
-                        Manifest.permission.READ_MEDIA_IMAGES)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-            requestPermissions(
-                    new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                    REQ_READ_IMG);
-        } else {
-            picker.launch("image/*");
-        }
+        String[] mimeTypes = new String[]{"image/*"};
+        picker.launch(mimeTypes);     // ya no necesitamos pedir permiso aquí
     }
 
-    @Override
-    public void onRequestPermissionsResult(int r, @NonNull String[] p, @NonNull int[] g) {
-        if (r == REQ_READ_IMG && g.length > 0 && g[0] == PackageManager.PERMISSION_GRANTED) {
-            picker.launch("image/*");
-        } else if (r == REQ_READ_IMG) {
-            Toast.makeText(getContext(),
-                    "Necesitas conceder permiso para seleccionar imágenes",
-                    Toast.LENGTH_LONG).show();
-        }
-    }
 
     // --------------------------- guardar ---------------------------
     private void save() {
