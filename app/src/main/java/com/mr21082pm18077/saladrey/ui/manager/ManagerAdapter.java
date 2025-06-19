@@ -3,7 +3,6 @@ package com.mr21082pm18077.saladrey.ui.manager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,21 +19,19 @@ import java.util.List;
 
 public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.VH> {
 
-    public interface Actions {
-        void edit(Salad s);
-        void delete(Salad s);
+    private final List<Salad> data = new ArrayList<>();
+    private final Actions act;
+
+    public ManagerAdapter(Actions a) {
+        act = a;
     }
 
-    private final List<Salad> data = new ArrayList<>();
-    private final Actions actions;
-
-    public ManagerAdapter(Actions act) { this.actions = act; }
-
-    @NonNull @Override
-    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_manager_salad, parent, false);
-        return new VH(v);
+    @NonNull
+    @Override
+    public VH onCreateViewHolder(@NonNull ViewGroup p, int v) {
+        View view = LayoutInflater.from(p.getContext())
+                .inflate(R.layout.item_salad, p, false);
+        return new VH(view);
     }
 
     @Override
@@ -42,31 +39,52 @@ public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.VH> {
         Salad s = data.get(pos);
         h.txtName.setText(s.name);
         h.txtPrice.setText(String.format("$ %.2f", s.price));
+
         Glide.with(h.img.getContext())
-                .load(s.imageUri.isEmpty() ? R.drawable.ic_launcher_background : s.imageUri)
+                .load(s.imageUri.isEmpty() ? R.drawable.ic_launcher_background
+                        : s.imageUri)
+                .centerCrop()
                 .into(h.img);
 
-        h.btnEdit.setOnClickListener(v -> actions.edit(s));
-        h.btnDelete.setOnClickListener(v -> actions.delete(s));
+        // Tocar = editar
+        h.itemView.setOnClickListener(v -> act.edit(s));
+
+        // Mantener pulsado = borrar
+        h.itemView.setOnLongClickListener(v -> {
+            act.delete(s);
+            return true;
+        });
     }
 
     @Override
-    public int getItemCount() { return data.size(); }   // ← ¡IMPRESCINDIBLE!
+    public int getItemCount() {
+        return data.size();
+    }
 
     public void submit(List<Salad> list) {
-        data.clear(); data.addAll(list); notifyDataSetChanged();
+        data.clear();
+        data.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Callbacks para editar y borrar
+     */
+    public interface Actions {
+        void edit(Salad s);
+
+        void delete(Salad s);
     }
 
     static class VH extends RecyclerView.ViewHolder {
-        ImageView img; TextView txtName, txtPrice;
-        ImageButton btnEdit, btnDelete;
+        TextView txtName, txtPrice;
+        ImageView img;
+
         VH(View v) {
             super(v);
-            img       = v.findViewById(R.id.imgSalad);
-            txtName   = v.findViewById(R.id.txtName);
-            txtPrice  = v.findViewById(R.id.txtPrice);
-            btnEdit   = v.findViewById(R.id.btnEdit);
-            btnDelete = v.findViewById(R.id.btnDelete);
+            txtName = v.findViewById(R.id.txtName);
+            txtPrice = v.findViewById(R.id.txtPrice);
+            img = v.findViewById(R.id.imgSalad);
         }
     }
 }

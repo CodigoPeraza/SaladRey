@@ -40,9 +40,11 @@ public class ManagerFragment extends Fragment {
 
             @Override
             public void delete(Salad s) {
-                repo.delete(s);
+                repo.delete(s);   // basta con esto; LiveData refresca la lista
             }
         });
+
+        rv.setAdapter(ad);
 
         // Observa los cambios en tiempo real
         repo.all().observe(getViewLifecycleOwner(), ad::submit);

@@ -1,5 +1,6 @@
 package com.mr21082pm18077.saladrey.ui.catalog;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,14 @@ public class CatalogFragment extends Fragment {
     public void onViewCreated(@NonNull View v, Bundle s) {
         RecyclerView rv = v.findViewById(R.id.recyclerCatalog);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CatalogAdapter(
-                salad -> CartRepository.get().add(salad)); // click -> carrito
+        adapter = new CatalogAdapter(salad -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Añadir al carrito")
+                    .setMessage("¿Agregar \"" + salad.name + "\" al carrito?")
+                    .setPositiveButton("Sí", (d, i) -> CartRepository.get().add(salad))
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+        });
         rv.setAdapter(adapter);
 
         vm = new ViewModelProvider(this).get(CatalogViewModel.class);
