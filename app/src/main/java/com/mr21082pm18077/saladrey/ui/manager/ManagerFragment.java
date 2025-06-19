@@ -21,30 +21,35 @@ public class ManagerFragment extends Fragment {
     private SaladRepository repo;
     private ManagerAdapter ad;
 
-    @Override public View onCreateView(@NonNull LayoutInflater i, ViewGroup c, Bundle s){
-        return i.inflate(R.layout.fragment_manager, c,false);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater i, ViewGroup c, Bundle s) {
+        return i.inflate(R.layout.fragment_manager, c, false);
     }
-    @Override public void onViewCreated(@NonNull View v, Bundle s){
+
+    @Override
+    public void onViewCreated(@NonNull View v, Bundle s) {
         repo = new SaladRepository(requireContext());
         RecyclerView rv = v.findViewById(R.id.recyclerManager);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         ad = new ManagerAdapter(new ManagerAdapter.Actions() {
-            @Override public void edit(Salad s) {
+            @Override
+            public void edit(Salad s) {
                 new AddEditSaladDialogFragment(repo, s)
                         .show(getParentFragmentManager(), "edit");
             }
-            @Override public void delete(Salad s) {
+
+            @Override
+            public void delete(Salad s) {
                 repo.delete(s);
             }
         });
 
         // Observa los cambios en tiempo real
         repo.all().observe(getViewLifecycleOwner(), ad::submit);
+        FloatingActionButton fab = v.findViewById(R.id.fabManager);
+        fab.setOnClickListener(c ->
+                new AddEditSaladDialogFragment(repo, null)
+                        .show(getParentFragmentManager(), "add"));
 
-        // FAB flotante
-        ((FloatingActionButton) requireActivity().findViewById(R.id.fab))
-                .setOnClickListener(b ->
-                        new AddEditSaladDialogFragment(repo,null)
-                                .show(getParentFragmentManager(),"add"));
     }
 }
