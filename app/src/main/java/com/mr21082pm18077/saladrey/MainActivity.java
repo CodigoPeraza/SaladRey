@@ -5,14 +5,12 @@ import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.navigation.NavigationView;
 import com.mr21082pm18077.saladrey.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,23 +34,25 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
 
         // 4) FAB: acción de Snackbar y navegación al carrito
-        binding.appBarMain.fab.setOnClickListener(view -> {
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                    .setAnchorView(R.id.fab)
-                    .show();
-            NavController nav = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-            nav.navigate(R.id.action_catalog_to_cart);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
+        navController.addOnDestinationChangedListener((controller, destination, args) -> {
+            if (destination.getId() == R.id.nav_home) {          // Catálogo
+                binding.appBarMain.fab.show();
+                binding.appBarMain.fab.setOnClickListener(v ->
+                        navController.navigate(R.id.action_catalog_to_cart));
+            } else {
+                binding.appBarMain.fab.hide();
+                binding.appBarMain.fab.setOnClickListener(null); // previene leaks
+            }
         });
 
         // 5) Configurar NavigationUI con el Drawer
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
-        )
-                .setOpenableLayout(drawer)
-                .build();
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+                R.id.nav_home,      // Catálogo
+                R.id.nav_gallery,   // Carrito
+                R.id.nav_manager    // Manager
+        ).setOpenableLayout(drawer).build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 

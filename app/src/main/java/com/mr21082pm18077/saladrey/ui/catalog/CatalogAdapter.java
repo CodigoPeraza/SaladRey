@@ -1,27 +1,30 @@
 package com.mr21082pm18077.saladrey.ui.catalog;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.mr21082pm18077.saladrey.R;
 import com.mr21082pm18077.saladrey.data.local.Salad;
+
 import org.jspecify.annotations.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.VH> {
 
-    public interface OnAddClick {
-        void addToCart(Salad salad);
-    }
-
     private final List<Salad> data = new ArrayList<>();
     private final OnAddClick listener;
-
-    public CatalogAdapter(OnAddClick l) { this.listener = l; }
+    public CatalogAdapter(OnAddClick l) {
+        this.listener = l;
+    }
 
     @NonNull
     @Override
@@ -31,24 +34,45 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.VH> {
         return new VH(v);
     }
 
-    @Override public void onBindViewHolder(@NonNull VH h, int pos) {
+    @Override
+    public void onBindViewHolder(@NonNull VH h, int pos) {
         Salad s = data.get(pos);
+
         h.txtName.setText(s.name);
         h.txtPrice.setText(String.format("$ %.2f", s.price));
-        // Cargamos imagen; usa Glide/Picasso si es URI, por ahora solo ic_launcher_x
+
+        // Cargar imagen real si existe
+        if (!s.imageUri.isEmpty()) {
+            Glide.with(h.img.getContext())
+                    .load(Uri.parse(s.imageUri))
+                    .placeholder(R.drawable.ic_launcher_background)   // opcional
+                    .into(h.img);
+        } else {
+            h.img.setImageResource(R.drawable.ic_launcher_background);
+        }
+
         h.itemView.setOnClickListener(v -> listener.addToCart(s));
     }
 
-    @Override public int getItemCount() { return data.size(); }
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
 
     public void submitList(List<Salad> list) {
-        data.clear(); data.addAll(list);
+        data.clear();
+        data.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public interface OnAddClick {
+        void addToCart(Salad salad);
     }
 
     static class VH extends RecyclerView.ViewHolder {
         TextView txtName, txtPrice;
         ImageView img;
+
         VH(View v) {
             super(v);
             txtName = v.findViewById(R.id.txtName);

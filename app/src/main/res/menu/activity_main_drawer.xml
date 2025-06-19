@@ -4,21 +4,24 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <!-- Catálogo -->
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+        android:icon="@drawable/ic_menu_camera"
+        android:title="@string/menu_catalog" />
+
+        <!-- Carrito -->
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="@string/menu_cart" />
+
+        <!-- Manager (solo admin) -->
         <item
             android:id="@+id/nav_manager"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_manager" />
+
     </group>
 </menu>
