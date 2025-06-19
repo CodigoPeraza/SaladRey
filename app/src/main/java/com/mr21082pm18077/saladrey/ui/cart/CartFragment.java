@@ -49,7 +49,7 @@ public class CartFragment extends Fragment {
 
         v.findViewById(R.id.btnClear).setOnClickListener(b -> vm.clear());
 
-        v.findViewById(R.id.btnPay).setOnClickListener(b -> {
+        v.findViewById(R.id.btnOrder).setOnClickListener(b -> {
 
             // 1. Campo de entrada
             final EditText input = new EditText(requireContext());
