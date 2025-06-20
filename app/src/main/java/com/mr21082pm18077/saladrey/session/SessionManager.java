@@ -19,6 +19,11 @@ public class SessionManager {
                 .apply();
     }
 
+    public static String getEmail() {
+        return prefs.getString("email", "");
+    }
+
+
     public static boolean isLogged() {
         return prefs.contains("email");
     }

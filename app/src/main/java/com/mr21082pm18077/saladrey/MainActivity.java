@@ -3,6 +3,8 @@ package com.mr21082pm18077.saladrey;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -86,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
             if (handled) drawer.close();      // opcional: cerrar drawer al cambiar destino
             return handled;
         });
+
+        // Header (posición 0)
+        View header = binding.navView.getHeaderView(0);
+        TextView txtEmail = header.findViewById(R.id.txtEmail);
+        txtEmail.setText(SessionManager.getEmail());
+
+
     }
 
     @Override
