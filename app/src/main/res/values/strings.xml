@@ -7,6 +7,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="menu_logout">Cerrar sesión</string>
+
     <!-- Carrito -->
     <string name="btn_order">Ordenar</string>
 

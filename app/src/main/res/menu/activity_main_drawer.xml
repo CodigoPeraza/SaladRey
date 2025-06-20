@@ -8,14 +8,14 @@
         <!-- Catálogo -->
         <item
             android:id="@+id/nav_home"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="@string/menu_catalog" />
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_catalog" />
 
         <!-- Carrito -->
         <item
             android:id="@+id/nav_gallery"
-        android:icon="@drawable/ic_menu_gallery"
-        android:title="@string/menu_cart" />
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_cart" />
 
         <!-- Manager (solo admin) -->
         <item
@@ -24,4 +24,15 @@
             android:title="@string/menu_manager" />
 
     </group>
+
+    <!--- Separador visual -->
+    <item android:title="">
+        <menu>
+            <!-- Cerrar sesión -->
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="@string/menu_logout" />
+        </menu>
+    </item>
 </menu>

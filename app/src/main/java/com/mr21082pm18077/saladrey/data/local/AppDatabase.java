@@ -6,10 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Salad.class}, version = 1, exportSchema = false)
+@Database(entities = {Salad.class, User.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
-    public abstract SaladDao saladDao();
 
     public static AppDatabase get(Context ctx) {
         if (INSTANCE == null) {
@@ -19,11 +18,15 @@ public abstract class AppDatabase extends RoomDatabase {
                                     ctx.getApplicationContext(),
                                     AppDatabase.class,
                                     "saladrey.db")
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration() //para volver a construir la BD
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
+
+    public abstract SaladDao saladDao();
+
+    public abstract UserDao userDao();
 }
