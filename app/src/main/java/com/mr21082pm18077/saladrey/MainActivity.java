@@ -1,5 +1,6 @@
 package com.mr21082pm18077.saladrey;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -12,6 +13,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.mr21082pm18077.saladrey.databinding.ActivityMainBinding;
+import com.mr21082pm18077.saladrey.session.SessionManager;
+import com.mr21082pm18077.saladrey.ui.auth.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,13 +60,32 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         // 6) Ocultar ítem “Manager” si el usuario no es admin
-        boolean isAdmin = getSharedPreferences("prefs", MODE_PRIVATE)
-                .getBoolean("isAdmin", true);
+        boolean isAdmin = SessionManager.isAdmin();
+        navigationView.getMenu().findItem(R.id.nav_manager).setVisible(isAdmin);
+
         if (!isAdmin) {
             navigationView.getMenu()
                     .findItem(R.id.nav_manager)
                     .setVisible(false);
         }
+
+        // Cerrar session
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_logout) {
+                // 1. Vaciar sesión
+                SessionManager.logout();
+
+                // 2. Ir a LoginActivity
+                startActivity(new Intent(this, LoginActivity.class));
+                finish(); // cierra MainActivity
+                return true; // consumido
+            }
+            // Para los demás ítems deja que NavigationUI haga su trabajo
+            boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
+            if (handled) drawer.close();      // opcional: cerrar drawer al cambiar destino
+            return handled;
+        });
     }
 
     @Override
