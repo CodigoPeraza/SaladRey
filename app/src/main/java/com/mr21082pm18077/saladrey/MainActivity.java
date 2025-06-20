@@ -27,88 +27,68 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 1) Inflar el binding y fijar la vista
+        /* ---------- VISTA ---------- */
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // 2) Obtener referencias a vistas
-        NavigationView navigationView = binding.navView;
-        DrawerLayout drawer = binding.drawerLayout;
+        /* ---------- INICIALIZAR SESSION ---------- */
+        SessionManager.init(this);
 
-        // 3) Toolbar
+        /* ---------- TOOLBAR ---------- */
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        // 4) FAB: acción de Snackbar y navegación al carrito
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        /* ---------- DRAWER & NAV ---------- */
+        NavigationView navigationView = binding.navView;
+        DrawerLayout drawer = binding.drawerLayout;
+        NavController navController =
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 
-        navController.addOnDestinationChangedListener((controller, destination, args) -> {
-            if (destination.getId() == R.id.nav_home) {          // Catálogo
-                binding.appBarMain.fab.show();
-                binding.appBarMain.fab.setOnClickListener(v ->
-                        navController.navigate(R.id.action_catalog_to_cart));
-            } else {
-                binding.appBarMain.fab.hide();
-                binding.appBarMain.fab.setOnClickListener(null); // previene leaks
-            }
-        });
-
-        // 5) Configurar NavigationUI con el Drawer
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home,      // Catálogo
                 R.id.nav_gallery,   // Carrito
                 R.id.nav_manager    // Manager
         ).setOpenableLayout(drawer).build();
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // 6) Ocultar ítem “Manager” si el usuario no es admin
+        /* ---------- VISIBILIDAD MANAGER ---------- */
         boolean isAdmin = SessionManager.isAdmin();
         navigationView.getMenu().findItem(R.id.nav_manager).setVisible(isAdmin);
 
-        if (!isAdmin) {
-            navigationView.getMenu()
-                    .findItem(R.id.nav_manager)
-                    .setVisible(false);
-        }
-
-        // Cerrar session
-
+        /* ---------- CERRAR SESIÓN ---------- */
         navigationView.setNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_logout) {
-                // 1. Vaciar sesión
                 SessionManager.logout();
-
-                // 2. Ir a LoginActivity
                 startActivity(new Intent(this, LoginActivity.class));
-                finish(); // cierra MainActivity
-                return true; // consumido
+                finish();
+                return true;      // consumido
             }
-            // Para los demás ítems deja que NavigationUI haga su trabajo
             boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
-            if (handled) drawer.close();      // opcional: cerrar drawer al cambiar destino
+            if (handled) drawer.close();
             return handled;
         });
 
-        // Header (posición 0)
-        View header = binding.navView.getHeaderView(0);
+        /* ---------- CORREO EN EL HEADER ---------- */
+        View header = navigationView.getHeaderView(0);
         TextView txtEmail = header.findViewById(R.id.txtEmail);
         txtEmail.setText(SessionManager.getEmail());
 
-
+        /* ---------- OCULTAR FAB GLOBAL ---------- */
+        binding.appBarMain.fab.hide();
+        binding.appBarMain.fab.setOnClickListener(null);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflar el menú del toolbar
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(
-                this, R.id.nav_host_fragment_content_main
-        );
+        NavController navController =
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
