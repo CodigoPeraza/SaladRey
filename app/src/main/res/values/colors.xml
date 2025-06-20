@@ -5,6 +5,13 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- PALETA DE COLORES PERSONALIZADO -->
+    <color name="terracotta">#E27065</color>
+    <color name="palm_leaf">#7A8A41</color>
+    <color name="champagne">#F5E6CF</color>
+    <color name="kombu_green">#3B4A33</color>
 </resources>

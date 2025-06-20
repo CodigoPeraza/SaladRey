@@ -1,0 +1,80 @@
+package com.mr21082pm18077.saladrey.ui.cart;
+
+import android.app.AlertDialog;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.mr21082pm18077.saladrey.R;
+
+import org.jspecify.annotations.NonNull;
+
+public class CartFragment extends Fragment {
+
+    private CartViewModel vm;
+    private CartAdapter ad;
+    private TextView txtTotal;
+
+    public CartFragment() {
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater i, ViewGroup c, Bundle s) {
+        return i.inflate(R.layout.fragment_cart, c, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View v, Bundle s) {
+        RecyclerView rv = v.findViewById(R.id.recyclerCart);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        ad = new CartAdapter(ci -> vm.delete(ci));
+        rv.setAdapter(ad);
+
+        txtTotal = v.findViewById(R.id.txtTotal);
+
+        vm = new ViewModelProvider(this).get(CartViewModel.class);
+        vm.items.observe(getViewLifecycleOwner(), list -> {
+            ad.submit(list);
+            txtTotal.setText(String.format("Total: $ %.2f", vm.total()));
+        });
+
+        v.findViewById(R.id.btnClear).setOnClickListener(b -> vm.clear());
+
+        v.findViewById(R.id.btnOrder).setOnClickListener(b -> {
+
+            // Verificar si el carrito está vacío
+            if (vm.items.getValue() == null || vm.items.getValue().isEmpty()) {
+                Toast.makeText(requireContext(), "El carrito está vacío", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Inflar vista personalizada
+            View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_order, null);
+            EditText edtNombreMesa = dialogView.findViewById(R.id.edtNombreMesa);
+
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Confirmar pedido")
+                    .setView(dialogView)
+                    .setPositiveButton("Confirmar", (d, i) -> {
+                        String who = edtNombreMesa.getText().toString().trim();
+                        if (who.isEmpty()) who = "cliente";
+                        Toast.makeText(requireContext(),
+                                "¡Pedido para " + who + " confirmado!", Toast.LENGTH_SHORT).show();
+
+                        vm.clear();
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+        });
+    }
+
+}

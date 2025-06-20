@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <!-- Catálogo -->
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:icon="@drawable/baseline_chrome_reader_mode_24"
+            android:title="@string/menu_catalog" />
+
+        <!-- Carrito -->
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:icon="@drawable/baseline_add_shopping_cart_24"
+            android:title="@string/menu_cart" />
+
+        <!-- Manager (solo admin) -->
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_manager"
+            android:icon="@drawable/baseline_app_settings_alt_24"
+            android:title="@string/menu_manager" />
+
     </group>
+
+    <!--- Separador visual -->
+    <item android:title="">
+        <menu>
+            <!-- Cerrar sesión -->
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="@string/menu_logout" />
+        </menu>
+    </item>
 </menu>

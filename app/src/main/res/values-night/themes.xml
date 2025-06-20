@@ -1,16 +1,79 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.SaladRey" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/palm_leaf</item>
+        <item name="colorPrimaryVariant">@color/palm_leaf</item>
+        <item name="colorOnPrimary">@color/champagne</item>
+
+        <item name="colorSecondary">@color/terracotta</item>
+        <item name="colorOnSecondary">@color/champagne</item>
+
+        <!-- Fondo general -->
+        <item name="android:colorBackground">@color/kombu_green</item>
+        <item name="colorSurface">#2A2A2A</item>
+        <item name="colorOnSurface">@color/champagne</item>
+
+        <!-- Texto -->
+        <item name="android:textColor">@color/champagne</item>
+
+        <!-- Toolbar -->
+        <item name="toolbarStyle">@style/CustomToolbarDark</item>
+
+        <!-- TextInputEditText -->
+        <item name="colorControlActivated">@color/champagne</item>
+        <item name="colorControlNormal">@color/palm_leaf</item>
+        <item name="hintTextColor">@color/champagne</item>
+        <item name="textInputStyle">@style/CustomTextInputDark</item>
+
+        <!-- Botón -->
+        <item name="android:buttonStyle">@style/CustomButtonDark</item>
+
+        <!-- CardView -->
+        <item name="cardViewStyle">@style/CustomCardViewDark</item>
+
+        <!-- Componentes -->
+        <item name="imageButtonStyle">@style/CustomImageButtonDark</item>
+
+        <!-- Barras -->
+        <item name="android:statusBarColor">@color/kombu_green</item>
+        <item name="android:navigationBarColor">@color/kombu_green</item>
+
     </style>
+
+    <!-- Subestilos modo oscuro -->
+
+    <style name="CustomTextViewDark" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/champagne</item>
+    </style>
+
+    <style name="CustomTextInputDark" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/champagne</item>
+        <item name="hintTextColor">@color/champagne</item>
+        <item name="android:textColor">@color/champagne</item>
+    </style>
+
+    <style name="CustomButtonDark" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/palm_leaf</item>
+        <item name="android:textColor">@color/champagne</item>
+    </style>
+
+    <style name="CustomToolbarDark" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/terracotta</item>
+        <item name="titleTextColor">@color/champagne</item>
+        <item name="subtitleTextColor">@color/champagne</item>
+    </style>
+
+    <style name="CustomCardViewDark" parent="CardView">
+        <item name="cardBackgroundColor">#2A2A2A</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">8dp</item>
+    </style>
+
+    <style name="CustomImageButtonDark" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:tint">@color/champagne</item>
+    </style>
+
 </resources>
