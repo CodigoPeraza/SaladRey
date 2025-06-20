@@ -19,6 +19,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle s) {
         super.onCreate(s);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         SessionManager.init(this);
         if (SessionManager.isLogged()) {
             startMain();

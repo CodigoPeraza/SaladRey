@@ -18,6 +18,11 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle s) {
         super.onCreate(s);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         repo = new AuthRepository(this);
         b = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
