@@ -1,17 +1,79 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.SaladRey" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/palm_leaf</item>
+        <item name="colorPrimaryVariant">@color/kombu_green</item>
+        <item name="colorOnPrimary">@color/champagne</item>
+
+        <item name="colorSecondary">@color/terracotta</item>
+        <item name="colorOnSecondary">@color/champagne</item>
+
+        <!-- Fondo general -->
+        <item name="android:colorBackground">@color/champagne</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="colorOnSurface">@color/kombu_green</item>
+
+        <!-- Texto -->
+        <item name="android:textColor">@color/kombu_green</item>
+
+        <!-- Toolbar -->
+        <item name="toolbarStyle">@style/CustomToolbar</item>
+
+        <!-- TextInputEditText / Layout -->
+        <item name="colorControlActivated">@color/terracotta</item>
+        <item name="colorControlNormal">@color/palm_leaf</item>
+        <item name="hintTextColor">@color/palm_leaf</item>
+        <item name="textInputStyle">@style/CustomTextInput</item>
+
+        <!-- Botón -->
+        <item name="android:buttonStyle">@style/CustomButton</item>
+
+        <!-- CardView -->
+        <item name="cardViewStyle">@style/CustomCardView</item>
+
+        <!-- Estilos por componente -->
+        <item name="imageButtonStyle">@style/CustomImageButton</item>
+
+        <!-- Status/Nav -->
+        <item name="android:statusBarColor">@color/kombu_green</item>
+        <item name="android:navigationBarColor">@color/champagne</item>
+
+    </style>
+
+    <!-- Subestilos -->
+
+    <style name="CustomTextView" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/kombu_green</item>
+    </style>
+
+    <style name="CustomTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/terracotta</item>
+        <item name="hintTextColor">@color/palm_leaf</item>
+        <item name="android:textColor">@color/kombu_green</item>
+    </style>
+
+    <style name="CustomButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/palm_leaf</item>
+        <item name="android:textColor">@color/champagne</item>
+    </style>
+
+    <style name="CustomToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/terracotta</item>
+        <item name="titleTextColor">@color/champagne</item>
+        <item name="subtitleTextColor">@color/champagne</item>
+    </style>
+
+    <style name="CustomCardView" parent="CardView">
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">8dp</item>
+    </style>
+
+    <style name="CustomImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:tint">@color/kombu_green</item>
     </style>
 
     <style name="Theme.SaladRey.NoActionBar">
