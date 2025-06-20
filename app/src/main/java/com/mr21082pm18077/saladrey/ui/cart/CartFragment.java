@@ -51,28 +51,30 @@ public class CartFragment extends Fragment {
 
         v.findViewById(R.id.btnOrder).setOnClickListener(b -> {
 
-            // 1. Campo de entrada
-            final EditText input = new EditText(requireContext());
-            input.setHint("Nombre o mesa");
-            input.setSingleLine();
+            // Verificar si el carrito está vacío
+            if (vm.items.getValue() == null || vm.items.getValue().isEmpty()) {
+                Toast.makeText(requireContext(), "El carrito está vacío", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            // 2. Diálogo de confirmación
+            // Inflar vista personalizada
+            View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_order, null);
+            EditText edtNombreMesa = dialogView.findViewById(R.id.edtNombreMesa);
+
             new AlertDialog.Builder(requireContext())
                     .setTitle("Confirmar pedido")
-                    .setMessage("Ingrese un nombre o mesa")
-                    .setView(input)
+                    .setView(dialogView)
                     .setPositiveButton("Confirmar", (d, i) -> {
-                        String who = input.getText().toString().trim();
+                        String who = edtNombreMesa.getText().toString().trim();
                         if (who.isEmpty()) who = "cliente";
                         Toast.makeText(requireContext(),
                                 "¡Pedido para " + who + " confirmado!", Toast.LENGTH_SHORT).show();
 
-                        vm.clear();   // 3. Vaciar carrito
+                        vm.clear();
                     })
                     .setNegativeButton("Cancelar", null)
                     .show();
         });
-
-
     }
+
 }

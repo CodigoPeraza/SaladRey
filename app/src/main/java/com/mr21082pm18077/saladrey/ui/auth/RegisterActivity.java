@@ -30,15 +30,39 @@ public class RegisterActivity extends AppCompatActivity {
         b.btnRegister.setOnClickListener(v -> {
             String m = b.edtMail.getText().toString().trim();
             String p = b.edtPass.getText().toString();
+
+            boolean isValid = true;
+
+            // Validación de campo vacío
+            if (m.isEmpty()) {
+                b.edtMail.setError("El correo es obligatorio");
+                isValid = false;
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(m).matches()) {
+                b.edtMail.setError("Correo no válido");
+                isValid = false;
+            }
+
+            if (p.isEmpty()) {
+                b.edtPass.setError("La contraseña es obligatoria");
+                isValid = false;
+            } else if (p.length() < 6) {
+                b.edtPass.setError("Mínimo 6 caracteres");
+                isValid = false;
+            }
+
+            if (!isValid) return; // Si hay errores, no se continúa
+
+            // Si pasa todas las validaciones
             repo.register(m, p, (ok, msg) -> runOnUiThread(() -> {
                 if (ok) {
                     startActivity(new Intent(this, MainActivity.class));
                     Toast.makeText(this, "Cuenta creada", Toast.LENGTH_SHORT).show();
-                    finish();   // vuelve a Login → Main
+                    finish(); // vuelve a Login → Main
                 } else {
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                 }
             }));
         });
     }
+
 }
